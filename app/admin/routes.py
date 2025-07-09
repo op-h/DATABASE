@@ -92,6 +92,11 @@ def index():
 @login_required
 def departments():
     departments = Department.query.all()
+    
+    # Calculate material counts for each department
+    for department in departments:
+        department.material_count = Material.query.join(Subject).filter(Subject.department_id == department.id).count()
+    
     return render_template('admin/departments.html', departments=departments)
 
 @bp.route('/add-department', methods=['GET', 'POST'])
@@ -188,14 +193,31 @@ def add_material():
     form.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") 
                               for s in Subject.query.join(Department).all()]
     if form.validate_on_submit():
-        material = Material(title=form.title.data,
-                          description=form.description.data,
-                          subject_id=form.subject_id.data,
-                          file_path=form.file_path.data)
-        db.session.add(material)
-        db.session.commit()
-        flash('Material added successfully.', 'success')
-        return redirect(url_for('admin.materials'))
+        file = form.file.data
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            
+            # Get file size and type
+            file_size = os.path.getsize(file_path)
+            file_type = filename.rsplit('.', 1)[1].lower()
+            
+            material = Material(
+                title=form.title.data,
+                description=form.description.data,
+                subject_id=form.subject_id.data,
+                filename=filename,
+                file_type=file_type,
+                file_size=file_size,
+                uploaded_by=current_user.id
+            )
+            db.session.add(material)
+            db.session.commit()
+            flash('Material added successfully.', 'success')
+            return redirect(url_for('admin.materials'))
+        else:
+            flash('Invalid file type.', 'danger')
     return render_template('admin/add_material.html', form=form)
 
 @bp.route('/edit-material/<int:id>', methods=['GET', 'POST'])
@@ -209,7 +231,29 @@ def edit_material(id):
         material.title = form.title.data
         material.description = form.description.data
         material.subject_id = form.subject_id.data
-        material.file_path = form.file_path.data
+        
+        # Handle file upload if a new file is provided
+        if form.file.data:
+            file = form.file.data
+            if file and allowed_file(file.filename):
+                # Delete old file if it exists
+                old_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], material.filename)
+                if os.path.exists(old_file_path):
+                    os.remove(old_file_path)
+                
+                # Save new file
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                
+                # Update file metadata
+                material.filename = filename
+                material.file_type = filename.rsplit('.', 1)[1].lower()
+                material.file_size = os.path.getsize(file_path)
+            else:
+                flash('Invalid file type.', 'danger')
+                return render_template('admin/edit_material.html', form=form, material=material)
+        
         db.session.commit()
         flash('Material updated successfully.', 'success')
         return redirect(url_for('admin.materials'))
@@ -219,6 +263,13 @@ def edit_material(id):
 @login_required
 def delete_material(id):
     material = Material.query.get_or_404(id)
+    
+    # Delete the file from disk
+    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], material.filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    
+    # Delete the database record
     db.session.delete(material)
     db.session.commit()
     flash('Material deleted successfully.', 'success')
