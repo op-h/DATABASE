@@ -97,7 +97,7 @@ def departments():
     for department in departments:
         department.material_count = Material.query.join(Subject).filter(Subject.department_id == department.id).count()
     
-    return render_template('admin/departments.html', departments=departments)
+    return render_template('admin/departments.html', departments=departments, now=datetime.utcnow())
 
 @bp.route('/add-department', methods=['GET', 'POST'])
 @login_required
@@ -109,7 +109,7 @@ def add_department():
         db.session.commit()
         flash('Department added successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/add_department.html', form=form)
+    return render_template('admin/add_department.html', form=form, now=datetime.utcnow())
 
 @bp.route('/edit-department/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -122,7 +122,7 @@ def edit_department(id):
         db.session.commit()
         flash('Department updated successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/edit_department.html', form=form, department=department)
+    return render_template('admin/edit_department.html', form=form, department=department, now=datetime.utcnow())
 
 @bp.route('/delete-department/<int:id>')
 @login_required
@@ -138,7 +138,7 @@ def delete_department(id):
 @login_required
 def subjects():
     subjects = Subject.query.all()
-    return render_template('admin/subjects.html', subjects=subjects)
+    return render_template('admin/subjects.html', subjects=subjects, now=datetime.utcnow())
 
 @bp.route('/add-subject', methods=['GET', 'POST'])
 @login_required
@@ -153,7 +153,7 @@ def add_subject():
         db.session.commit()
         flash('Subject added successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/add_subject.html', form=form)
+    return render_template('admin/add_subject.html', form=form, now=datetime.utcnow())
 
 @bp.route('/edit-subject/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -168,7 +168,7 @@ def edit_subject(id):
         db.session.commit()
         flash('Subject updated successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/edit_subject.html', form=form, subject=subject)
+    return render_template('admin/edit_subject.html', form=form, subject=subject, now=datetime.utcnow())
 
 @bp.route('/delete-subject/<int:id>')
 @login_required
@@ -184,7 +184,7 @@ def delete_subject(id):
 @login_required
 def materials():
     materials = Material.query.all()
-    return render_template('admin/materials.html', materials=materials)
+    return render_template('admin/materials.html', materials=materials, now=datetime.utcnow())
 
 @bp.route('/add-material', methods=['GET', 'POST'])
 @login_required
@@ -218,7 +218,7 @@ def add_material():
             return redirect(url_for('admin.materials'))
         else:
             flash('Invalid file type.', 'danger')
-    return render_template('admin/add_material.html', form=form)
+    return render_template('admin/add_material.html', form=form, now=datetime.utcnow())
 
 @bp.route('/edit-material/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -252,12 +252,12 @@ def edit_material(id):
                 material.file_size = os.path.getsize(file_path)
             else:
                 flash('Invalid file type.', 'danger')
-                return render_template('admin/edit_material.html', form=form, material=material)
+                return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
         
         db.session.commit()
         flash('Material updated successfully.', 'success')
         return redirect(url_for('admin.materials'))
-    return render_template('admin/edit_material.html', form=form, material=material)
+    return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
 
 @bp.route('/delete-material/<int:id>')
 @login_required
