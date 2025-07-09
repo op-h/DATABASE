@@ -26,6 +26,10 @@ def create_app(config_class=Config):
     # Import models here to avoid circular imports
     from app import models
 
+    # Register CLI commands
+    from app.cli import register_commands
+    register_commands(app)
+
     # Security headers
     csp = {
         'default-src': "'self'",
