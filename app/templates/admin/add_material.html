@@ -42,7 +42,19 @@
 
                         <div class="mb-3">
                             {{ form.subject_id.label(class="form-label fw-bold") }}
-                            {{ form.subject_id(class="form-select") }}
+                            <select name="subject_id" class="form-select" id="subject_id">
+                                {% set last_dept = None %}
+                                {% for value, label in form.subject_id.choices %}
+                                    {% set dept = label.split(' - ')[0] %}
+                                    {% if dept != last_dept %}
+                                        {% if not loop.first %}</optgroup>{% endif %}
+                                        <optgroup label="{{ dept }}">
+                                        {% set last_dept = dept %}
+                                    {% endif %}
+                                    <option value="{{ value }}" {% if form.subject_id.data == value %}selected{% endif %}>{{ label.split(' - ')[1] }}</option>
+                                {% endfor %}
+                                </optgroup>
+                            </select>
                             {% if form.subject_id.errors %}
                                 <div class="text-danger">
                                     {% for error in form.subject_id.errors %}
