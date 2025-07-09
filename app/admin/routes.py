@@ -16,6 +16,13 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
+def ensure_upload_directory():
+    """Ensure the upload directory exists"""
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder, exist_ok=True)
+    return upload_folder
+
 def validate_file_type(file_path, original_filename):
     # Initialize mimetypes
     mimetypes.init()
@@ -56,7 +63,7 @@ def index():
     departments_count = Department.query.count()
     subjects_count = Subject.query.count()
     materials_count = Material.query.count()
-    total_downloads = sum(material.downloads for material in Material.query.all())
+    total_downloads = sum(material.download_count for material in Material.query.all())
     
     # Get recent activities (mock data for now)
     recent_activities = [
@@ -197,29 +204,36 @@ def add_material():
     if form.validate_on_submit():
         file = form.file.data
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            
-            # Get file size and type
-            file_size = os.path.getsize(file_path)
-            file_type = filename.rsplit('.', 1)[1].lower()
-            
-            material = Material(
-                title=form.title.data,
-                description=form.description.data,
-                subject_id=form.subject_id.data,
-                filename=filename,
-                file_type=file_type,
-                file_size=file_size,
-                uploaded_by=current_user.id
-            )
-            db.session.add(material)
-            db.session.commit()
-            flash('Material added successfully.', 'success')
-            return redirect(url_for('admin.materials'))
+            try:
+                # Ensure upload directory exists
+                upload_folder = ensure_upload_directory()
+                
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(upload_folder, filename)
+                file.save(file_path)
+                
+                # Get file size and type
+                file_size = os.path.getsize(file_path)
+                file_type = filename.rsplit('.', 1)[1].lower()
+                
+                material = Material(
+                    title=form.title.data,
+                    description=form.description.data,
+                    subject_id=form.subject_id.data,
+                    filename=filename,
+                    file_type=file_type,
+                    file_size=file_size,
+                    uploaded_by=current_user.id
+                )
+                db.session.add(material)
+                db.session.commit()
+                flash('Material added successfully.', 'success')
+                return redirect(url_for('admin.materials'))
+            except Exception as e:
+                flash(f'Error uploading file: {str(e)}', 'danger')
+                return render_template('admin/add_material.html', form=form, now=datetime.utcnow())
         else:
-            flash('Invalid file type.', 'danger')
+            flash('Invalid file type. Please upload a valid file.', 'danger')
     return render_template('admin/add_material.html', form=form, now=datetime.utcnow())
 
 @bp.route('/edit-material/<int:id>', methods=['GET', 'POST'])
@@ -238,22 +252,29 @@ def edit_material(id):
         if form.file.data:
             file = form.file.data
             if file and allowed_file(file.filename):
-                # Delete old file if it exists
-                old_file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], material.filename)
-                if os.path.exists(old_file_path):
-                    os.remove(old_file_path)
-                
-                # Save new file
-                filename = secure_filename(file.filename)
-                file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
-                
-                # Update file metadata
-                material.filename = filename
-                material.file_type = filename.rsplit('.', 1)[1].lower()
-                material.file_size = os.path.getsize(file_path)
+                try:
+                    # Ensure upload directory exists
+                    upload_folder = ensure_upload_directory()
+                    
+                    # Delete old file if it exists
+                    old_file_path = os.path.join(upload_folder, material.filename)
+                    if os.path.exists(old_file_path):
+                        os.remove(old_file_path)
+                    
+                    # Save new file
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(upload_folder, filename)
+                    file.save(file_path)
+                    
+                    # Update file metadata
+                    material.filename = filename
+                    material.file_type = filename.rsplit('.', 1)[1].lower()
+                    material.file_size = os.path.getsize(file_path)
+                except Exception as e:
+                    flash(f'Error updating file: {str(e)}', 'danger')
+                    return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
             else:
-                flash('Invalid file type.', 'danger')
+                flash('Invalid file type. Please upload a valid file.', 'danger')
                 return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
         
         db.session.commit()
@@ -266,10 +287,13 @@ def edit_material(id):
 def delete_material(id):
     material = Material.query.get_or_404(id)
     
-    # Delete the file from disk
-    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], material.filename)
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    try:
+        # Delete the file from disk
+        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], material.filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    except Exception as e:
+        flash(f'Warning: Could not delete file from disk: {str(e)}', 'warning')
     
     # Delete the database record
     db.session.delete(material)

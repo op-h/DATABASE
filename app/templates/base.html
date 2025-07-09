@@ -1,504 +1,282 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OPH Course Materials</title>
+    <title>{% block title %}{% endblock %} - MTU Course Materials</title>
+    
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --accent-color: #3b82f6;
-            --text-color: #1f2937;
-            --light-bg: #f3f4f6;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --header-height: 70px;
+            --secondary-color: #64748b;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --light-bg: #f8fafc;
+            --dark-bg: #1e293b;
+            --border-color: #e2e8f0;
         }
-
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
         body {
-            font-family: 'Poppins', sans-serif;
             background-color: var(--light-bg);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: var(--header-height);
+            color: #334155;
         }
         
-        main {
-            flex: 1 0 auto;
-            padding: 2rem 0;
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
         
-        /* Enhanced Navbar */
-        .navbar-custom {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            padding: 0;
-            box-shadow: var(--card-shadow);
-            height: var(--header-height);
-            position: fixed;
-            top: 0;
-            right: 0;
-            left: 0;
-            z-index: 1030;
-        }
-        
-        .navbar-custom .navbar-brand {
-            color: white;
-            font-weight: 600;
+        .navbar-brand {
+            font-weight: 700;
             font-size: 1.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-right: 2rem;
         }
         
-        .navbar-custom .nav-link {
-            color: rgba(255, 255, 255, 0.9);
+        .nav-link {
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
             transition: all 0.3s ease;
-            margin: 0 0.25rem;
-            position: relative;
         }
         
-        .navbar-custom .nav-link:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: white;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        .navbar-custom .nav-link:hover:after,
-        .navbar-custom .nav-link.active:after {
-            width: 80%;
-        }
-        
-        .navbar-custom .nav-link:hover,
-        .navbar-custom .navbar-brand:hover {
-            color: white;
+        .nav-link:hover {
             transform: translateY(-2px);
         }
-
-        .navbar-toggler {
-            border: none;
-            padding: 0.5rem;
-            margin-right: 1rem;
-        }
-
-        .navbar-toggler:focus {
-            box-shadow: none;
-        }
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
         }
         
-        /* Enhanced Cards */
         .card {
             border: none;
             border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            background: white;
-            margin-bottom: 1.5rem;
-            height: 100%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--hover-shadow);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
         }
         
-        .card-title {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        /* Enhanced Buttons */
         .btn {
-            padding: 0.75rem 1.5rem;
-            font-weight: 500;
             border-radius: 8px;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.875rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
             border: none;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
         }
         
-        /* Enhanced Footer */
-        .footer {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            padding: 3rem 0 1.5rem;
-            color: white;
-            margin-top: auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, 
-                rgba(255,255,255,0) 0%,
-                rgba(255,255,255,0.5) 50%,
-                rgba(255,255,255,0) 100%);
-        }
-
-        .footer .footer-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer h5 {
-            color: white;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
-        }
-
-        .footer p {
-            margin: 0;
-            opacity: 0.9;
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .footer .university-name {
-            color: #93c5fd;
-            font-weight: 500;
-        }
-
-        .footer .footer-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer .footer-links li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer .footer-links a {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .footer .footer-links a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .footer .copyright {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 1.5rem;
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.875rem;
-        }
-
-        .footer .social-links {
-            margin-top: 1.5rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .footer .social-links a {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .footer .social-links a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        /* Mobile Responsiveness */
-        @media (max-width: 991.98px) {
-            .navbar-custom {
-                padding: 0.5rem 1rem;
-            }
-            
-            .navbar-collapse {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                padding: 1rem;
-                border-radius: 0 0 12px 12px;
-                margin-top: 0.5rem;
-            }
-            
-            .navbar-custom .nav-link {
-                padding: 0.75rem 1rem;
-                margin: 0.25rem 0;
-            }
-            
-            .navbar-custom .nav-link:after {
-                display: none;
-            }
-            
-            .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-            
-            .card {
-                margin-bottom: 1rem;
-            }
-            
-            .footer {
-                padding: 2rem 0 1rem;
-                text-align: center;
-            }
-            
-            .footer .footer-links {
-                margin-bottom: 2rem;
-            }
-            
-            .footer h5 {
-                margin-top: 1.5rem;
-            }
-        }
-
-        @media (max-width: 575.98px) {
-            :root {
-                --header-height: 60px;
-            }
-            
-            .navbar-custom .navbar-brand {
-                font-size: 1.25rem;
-            }
-            
-            main {
-                padding: 1rem 0;
-            }
-            
-            .card {
-                border-radius: 8px;
-            }
-            
-            .btn {
-                padding: 0.625rem 1.25rem;
-                font-size: 0.8125rem;
-            }
-        }
-        
-        /* Loading animation */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        
-        .loading.hide {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loading .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
-        
-        /* Search box styling */
         .search-box {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
-        .search-box .form-control {
-            padding-left: 3rem;
-            background-color: white;
-            border-radius: 20px;
+            background: white;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border: 2px solid transparent;
             transition: all 0.3s ease;
         }
         
-        .search-box .form-control:focus {
+        .search-box:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         
-        .search-box .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-        }
-        
-        /* Form Controls */
-        .form-control {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s ease;
-            font-size: 0.9375rem;
-        }
-        
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-        }
-        
-        .form-label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            font-size: 0.9375rem;
-        }
-        
-        /* Tables */
-        .table {
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 2rem;
-        }
-        
-        .table thead th {
-            background-color: var(--primary-color);
+        .footer {
+            background: var(--dark-bg);
             color: white;
-            font-weight: 500;
-            text-transform: uppercase;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .material-item {
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .material-item:hover {
+            background-color: #f1f5f9;
+            transform: translateX(4px);
+        }
+        
+        .department-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
             font-size: 0.875rem;
-            letter-spacing: 0.5px;
-            padding: 1rem;
-            white-space: nowrap;
+            font-weight: 500;
         }
         
-        .table tbody td {
-            padding: 1rem;
-            vertical-align: middle;
+        .file-type-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
         }
         
-        .table tbody tr:hover {
-            background-color: rgba(37, 99, 235, 0.05);
+        .file-type-pdf { background-color: #fef2f2; color: #dc2626; }
+        .file-type-docx { background-color: #eff6ff; color: #2563eb; }
+        .file-type-pptx { background-color: #fef3c7; color: #d97706; }
+        .file-type-txt { background-color: #f3f4f6; color: #374151; }
+        
+        .alert {
+            border: none;
+            border-radius: 12px;
+            border-left: 4px solid;
         }
         
-        @media (max-width: 767.98px) {
-            .table-responsive {
-                border-radius: 12px;
-                box-shadow: var(--card-shadow);
+        .alert-success { border-left-color: var(--success-color); }
+        .alert-danger { border-left-color: var(--danger-color); }
+        .alert-warning { border-left-color: var(--warning-color); }
+        .alert-info { border-left-color: var(--primary-color); }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0;
             }
             
-            .table {
-                box-shadow: none;
-                margin-bottom: 0;
+            .navbar-brand {
+                font-size: 1.25rem;
             }
         }
     </style>
+    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Loading Spinner -->
-    <div class="loading hide">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}" data-aos="fade-right">
-                <i class="fas fa-book-reader me-2"></i>
-                <span class="d-none d-sm-inline">OPH Course Materials</span>
-                <span class="d-inline d-sm-none">OPH</span>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <i class="fas fa-graduation-cap me-2"></i>
+                MTU Course Materials
             </a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.index') }}">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.materials') }}">
+                            <i class="fas fa-book me-1"></i>Materials
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.departments') }}">
+                            <i class="fas fa-building me-1"></i>Departments
+                        </a>
+                    </li>
                     {% if current_user.is_authenticated and current_user.is_admin %}
-                    <li class="nav-item" data-aos="fade-down" data-aos-delay="100">
-                        <a class="nav-link d-flex align-items-center" href="{{ url_for('admin.departments') }}">
-                            <i class="fas fa-building me-2"></i>
-                            <span>Departments</span>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-cog me-1"></i>Admin
                         </a>
-                    </li>
-                    <li class="nav-item" data-aos="fade-down" data-aos-delay="200">
-                        <a class="nav-link d-flex align-items-center" href="{{ url_for('admin.subjects') }}">
-                            <i class="fas fa-book me-2"></i>
-                            <span>Subjects</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-aos="fade-down" data-aos-delay="300">
-                        <a class="nav-link d-flex align-items-center" href="{{ url_for('admin.materials') }}">
-                            <i class="fas fa-file-alt me-2"></i>
-                            <span>Materials</span>
-                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('admin.index') }}">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.materials') }}">
+                                <i class="fas fa-file-alt me-2"></i>Materials
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.subjects') }}">
+                                <i class="fas fa-book-open me-2"></i>Subjects
+                            </a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin.departments') }}">
+                                <i class="fas fa-building me-2"></i>Departments
+                            </a></li>
+                        </ul>
                     </li>
                     {% endif %}
                 </ul>
+                
+                <!-- Search Box -->
+                <form class="d-flex me-3" method="GET" action="{{ url_for('main.search') }}">
+                    <div class="input-group">
+                        <input class="form-control search-box" type="search" name="q" 
+                               placeholder="Search materials..." 
+                               value="{{ request.args.get('q', '') }}"
+                               aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
-                    <li class="nav-item" data-aos="fade-left">
-                        <a class="nav-link d-flex align-items-center" href="{{ url_for('auth.logout') }}">
-                            <i class="fas fa-sign-out-alt me-2"></i>
-                            <span>Logout</span>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>{{ current_user.email }}
                         </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
                     </li>
                     {% else %}
-                    <li class="nav-item" data-aos="fade-left">
-                        <a class="nav-link d-flex align-items-center" href="{{ url_for('auth.login') }}">
-                            <i class="fas fa-sign-in-alt me-2"></i>
-                            <span>Login</span>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
                     </li>
                     {% endif %}
@@ -509,16 +287,17 @@
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="container mt-4">
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" data-aos="fade-up">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endwith %}
 
     <!-- Main Content -->
@@ -528,122 +307,96 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6" data-aos="fade-right">
-                    <h5>About OPH Course Materials</h5>
-                    <p class="mb-4">A comprehensive platform for accessing and managing educational materials across various departments at MTU. We strive to provide quality education resources to our students.</p>
-                    <div class="social-links">
-                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>MTU Course Materials</h5>
+                    <p class="text-muted">A comprehensive platform for accessing and managing educational materials across various departments at MTU.</p>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                    <h5>Quick Links</h5>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="{{ url_for('main.index') }}">
-                                <i class="fas fa-home"></i>
-                                <span>Home</span>
-                            </a>
-                        </li>
-                        {% if current_user.is_authenticated and current_user.is_admin %}
-                        <li>
-                            <a href="{{ url_for('admin.departments') }}">
-                                <i class="fas fa-building"></i>
-                                <span>Manage Departments</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('admin.subjects') }}">
-                                <i class="fas fa-book"></i>
-                                <span>Manage Subjects</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('admin.materials') }}">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Manage Materials</span>
-                            </a>
-                        </li>
-                        {% endif %}
+                <div class="col-md-4 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="{{ url_for('main.materials') }}" class="text-muted text-decoration-none">Materials</a></li>
+                        <li><a href="{{ url_for('main.departments') }}" class="text-muted text-decoration-none">Departments</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-4 col-md-6" data-aos="fade-left">
-                    <h5>Contact Information</h5>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="mailto:pbeb4003@mtu.edu.iq">
-                                <i class="fas fa-envelope"></i>
-                                <span>pbeb4003@mtu.edu.iq</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="tel:+9647761781031">
-                                <i class="fas fa-phone"></i>
-                                <span>+964 776 178 1031</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>Baghdad, Iraq</span>
-                            </a>
-                        </li>
+                <div class="col-md-4 mb-4">
+                    <h6>Contact Information</h6>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-envelope me-2"></i>pbeb4003@mtu.edu.iq</li>
+                        <li><i class="fas fa-phone me-2"></i>+964 776 178 1031</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>Baghdad, Iraq</li>
                     </ul>
                 </div>
             </div>
-            <div class="copyright">
-                <p>© {{ now.year }} <span class="university-name">Middle Technical University</span>. All rights reserved.</p>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">&copy; 2025 Middle Technical University. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AOS Animation -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true,
-            disable: 'mobile'
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+        
+        // Search functionality with debouncing
+        let searchTimeout;
+        const searchInput = document.querySelector('input[name="q"]');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(function() {
+                    // Add loading state
+                    const searchButton = searchInput.nextElementSibling;
+                    const originalContent = searchButton.innerHTML;
+                    searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    // Submit form after delay
+                    setTimeout(function() {
+                        searchInput.form.submit();
+                    }, 300);
+                }, 500);
+            });
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
-
-        // Loading animation
-        window.addEventListener('load', function() {
-            document.querySelector('.loading').classList.add('hide');
-        });
-
-        // Show loading on page navigation
-        document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A' && !e.target.hasAttribute('download')) {
-                document.querySelector('.loading').classList.remove('hide');
-            }
-        });
-
-        // Form submission loading
-        document.addEventListener('submit', function(e) {
-            if (e.target.tagName === 'FORM') {
-                document.querySelector('.loading').classList.remove('hide');
-            }
-        });
-
-        // Active link highlighting
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
+        
+        // Add loading states to forms
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function() {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
                 }
             });
         });
     </script>
+    
     {% block extra_js %}{% endblock %}
 </body>
 </html> 
