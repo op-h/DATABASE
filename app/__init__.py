@@ -23,6 +23,9 @@ def create_app(config_class=Config):
     login.init_app(app)
     csrf.init_app(app)
 
+    # Import models here to avoid circular imports
+    from app import models
+
     # Security headers
     csp = {
         'default-src': "'self'",
@@ -56,6 +59,4 @@ def create_app(config_class=Config):
     except OSError:
         pass
 
-    return app
-
-from app import models 
+    return app 
