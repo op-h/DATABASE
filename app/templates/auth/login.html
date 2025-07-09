@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div class="card-body p-4">
-                <form method="POST" action="">
+                <form method="POST" action="{{ url_for('auth.login') }}">
                     {{ form.hidden_tag() }}
                     <div class="mb-3">
                         {{ form.email.label(class="form-label") }}

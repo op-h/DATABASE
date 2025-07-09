@@ -4,14 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_talisman import Talisman
-from flask_seasurf import SeaSurf
+from flask_wtf.csrf import CSRFProtect
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
-csrf = SeaSurf()
+csrf = CSRFProtect()
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -38,6 +38,7 @@ def create_app(config_class=Config):
         'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net",
         'font-src': "'self' https://fonts.gstatic.com https://cdn.jsdelivr.net",
         'frame-ancestors': "'none'",
+        'form-action': "'self'"
     }
     
     Talisman(app,
