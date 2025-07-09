@@ -29,6 +29,18 @@
                         </div>
 
                         <div class="mb-3">
+                            {{ form.code.label(class="form-label fw-bold") }}
+                            {{ form.code(class="form-control", placeholder="Enter subject code (e.g., CS101)") }}
+                            {% if form.code.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.code.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
                             {{ form.description.label(class="form-label fw-bold") }}
                             {{ form.description(class="form-control", rows="4", placeholder="Enter subject description") }}
                             {% if form.description.errors %}

@@ -147,6 +147,7 @@ def add_subject():
     form.department_id.choices = [(d.id, d.name) for d in Department.query.all()]
     if form.validate_on_submit():
         subject = Subject(name=form.name.data,
+                        code=form.code.data,
                         description=form.description.data,
                         department_id=form.department_id.data)
         db.session.add(subject)
@@ -163,6 +164,7 @@ def edit_subject(id):
     form.department_id.choices = [(d.id, d.name) for d in Department.query.all()]
     if form.validate_on_submit():
         subject.name = form.name.data
+        subject.code = form.code.data
         subject.description = form.description.data
         subject.department_id = form.department_id.data
         db.session.commit()

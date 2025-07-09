@@ -29,6 +29,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Subject Name</th>
+                            <th>Code</th>
                             <th>Department</th>
                             <th>Description</th>
                             <th>Materials</th>
@@ -47,6 +48,9 @@
                                         <strong>{{ subject.name }}</strong>
                                     </div>
                                 </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">{{ subject.code }}</span>
                             </td>
                             <td>
                                 <span class="badge bg-primary">{{ subject.department.name }}</span>
