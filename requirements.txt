@@ -10,5 +10,9 @@ email-validator==2.0.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
 psycopg2-binary==2.9.7
-Flask-Talisman==1.1.0  # For security headers
-Flask-SeaSurf==1.1.1   # For CSRF protection 
+Flask-Talisman==1.1.0
+Flask-SeaSurf==1.1.1
+# Heroku-specific requirements
+whitenoise==6.5.0  # For serving static files
+sentry-sdk==1.32.0  # For error tracking
+python-dateutil==2.8.2 

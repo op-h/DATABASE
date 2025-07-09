@@ -1,1 +1,2 @@
-web: gunicorn "app:create_app()" --workers 2 --threads 2 --timeout 60 
+web: gunicorn "app:create_app()"
+release: flask db upgrade 
