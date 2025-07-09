@@ -7,6 +7,7 @@ from app.models import User, Department
 def register_commands(app):
     app.cli.add_command(create_admin)
     app.cli.add_command(create_departments)
+    app.cli.add_command(reset_admin)
 
 @click.command('create-admin')
 @with_appcontext
@@ -25,6 +26,25 @@ def create_admin():
     db.session.commit()
     
     click.echo(f'Created admin user with email: {email}')
+
+@click.command('reset-admin')
+@with_appcontext
+def reset_admin():
+    """Reset the admin user password."""
+    email = os.getenv('ADMIN_EMAIL', 'admin@example.com')
+    password = os.getenv('ADMIN_PASSWORD', 'change-this-password')
+    
+    user = User.query.filter_by(email=email).first()
+    if user:
+        user.set_password(password)
+        db.session.commit()
+        click.echo(f'Reset password for admin user: {email}')
+    else:
+        user = User(email=email, is_admin=True)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        click.echo(f'Created new admin user with email: {email}')
 
 @click.command('create-departments')
 @with_appcontext

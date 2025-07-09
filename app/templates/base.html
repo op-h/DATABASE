@@ -5,16 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OPH Course Materials</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-color: #1f2937;
+            --light-bg: #f3f4f6;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color: var(--light-bg);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -22,117 +35,261 @@
         
         main {
             flex: 1 0 auto;
+            padding: 2rem 0;
         }
         
         .navbar-custom {
-            background-color: #0d6efd;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: var(--card-shadow);
         }
         
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
+        .navbar-custom .navbar-brand {
             color: white;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             transition: all 0.3s ease;
         }
         
-        .navbar-custom .nav-link:hover {
-            color: rgba(255,255,255,0.9);
-            transform: translateY(-1px);
+        .navbar-custom .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+        
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .navbar-brand:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
         
         .card {
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
+            overflow: hidden;
             background: white;
+            margin-bottom: 1.5rem;
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--hover-shadow);
         }
         
         .card-title {
-            color: #2c3e50;
+            color: var(--primary-color);
             font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.875rem;
         }
         
         .btn-primary {
-            padding: 0.5rem 1.5rem;
-            font-weight: 500;
-            border-radius: 7px;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(13,110,253,0.25);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         
         .footer {
-            background-color: #2c3e50;
-            padding: 1rem 0;
-            color: #fff;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            padding: 2rem 0;
+            color: white;
             margin-top: auto;
-            font-size: 0.9rem;
         }
 
         .footer p {
             margin: 0;
             opacity: 0.9;
+            font-size: 0.9rem;
         }
 
         .footer .university-name {
-            color: #3498db;
+            color: #93c5fd;
             font-weight: 500;
         }
 
         .footer .copyright {
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 1rem;
             margin-top: 1rem;
             text-align: center;
+            font-size: 0.875rem;
         }
 
         .footer .copyright span {
-            color: #3498db;
+            color: #93c5fd;
             font-weight: 500;
         }
         
         .alert {
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
         }
         
-        /* Custom container padding */
-        .container {
-            padding: 0 2rem;
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
         }
         
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
         }
         
-        /* Better focus styles */
-        a:focus, button:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+        
+        .loading.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* Search box styling */
+        .search-box {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .search-box .form-control {
+            padding-left: 3rem;
+            background-color: white;
+        }
+        
+        .search-box .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        /* Pagination styling */
+        .pagination .page-link {
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Material cards */
+        .material-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .material-card .card-body {
+            flex: 1;
+        }
+        
+        .material-card .download-count {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        /* Department cards */
+        .department-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .department-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* Subject list */
+        .subject-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .subject-list li {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .subject-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .subject-list li:hover {
+            background-color: #f9fafb;
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% include 'components/loading.html' %}
+    <!-- Loading Spinner -->
+    <div class="loading hide">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}" data-aos="fade-right">
                 <i class="fas fa-book-reader me-2"></i>OPH Course Materials
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -141,17 +298,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     {% if current_user.is_authenticated and current_user.is_admin %}
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-down" data-aos-delay="100">
                         <a class="nav-link" href="{{ url_for('admin.departments') }}">
                             <i class="fas fa-building me-1"></i>Departments
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-down" data-aos-delay="200">
                         <a class="nav-link" href="{{ url_for('admin.subjects') }}">
                             <i class="fas fa-book me-1"></i>Subjects
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-down" data-aos-delay="300">
                         <a class="nav-link" href="{{ url_for('admin.materials') }}">
                             <i class="fas fa-file-alt me-1"></i>Materials
                         </a>
@@ -160,13 +317,13 @@
                 </ul>
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-left">
                         <a class="nav-link" href="{{ url_for('auth.logout') }}">
                             <i class="fas fa-sign-out-alt me-1"></i>Logout
                         </a>
                     </li>
                     {% else %}
-                    <li class="nav-item">
+                    <li class="nav-item" data-aos="fade-left">
                         <a class="nav-link" href="{{ url_for('auth.login') }}">
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
@@ -182,7 +339,7 @@
     {% if messages %}
     <div class="container mt-4">
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" data-aos="fade-up">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -192,29 +349,62 @@
     {% endwith %}
 
     <!-- Main Content -->
-    <main class="py-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p>Department of Cyber Security Engineering Technology</p>
+            <div class="row">
+                <div class="col-md-6" data-aos="fade-right">
+                    <h5 class="mb-3">About OPH Course Materials</h5>
+                    <p>A comprehensive platform for accessing and managing educational materials across various departments at MTU.</p>
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="university-name">Middle Technical University / College of Electrical Engineering</p>
+                <div class="col-md-6 text-md-end" data-aos="fade-left">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <p><a href="{{ url_for('main.index') }}" class="text-white text-decoration-none">Home</a></p>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                    <p><a href="{{ url_for('admin.index') }}" class="text-white text-decoration-none">Admin Dashboard</a></p>
+                    {% endif %}
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; {{ now.year }} All Rights Reserved | Created by <span>OPH</span></p>
+                <p>© {{ now.year }} <span class="university-name">Middle Technical University</span>. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Loading animation
+        window.addEventListener('load', function() {
+            document.querySelector('.loading').classList.add('hide');
+        });
+
+        // Show loading on page navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && !e.target.hasAttribute('download')) {
+                document.querySelector('.loading').classList.remove('hide');
+            }
+        });
+
+        // Form submission loading
+        document.addEventListener('submit', function(e) {
+            if (e.target.tagName === 'FORM') {
+                document.querySelector('.loading').classList.remove('hide');
+            }
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html> 
