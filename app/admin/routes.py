@@ -7,10 +7,10 @@ from sqlalchemy import or_
 from app import db
 from app.admin import bp
 from app.admin.forms import DepartmentForm, SubjectForm, MaterialForm
-from app.models import Department, Subject, Material
+from app.models import Department, Subject, Material, User
 from functools import wraps
 from app.admin.decorators import admin_required
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -43,221 +43,183 @@ def validate_file_type(file_path, original_filename):
     
     return True, None
 
+@bp.before_request
+def check_admin():
+    if not current_user.is_authenticated or not current_user.is_admin:
+        flash('You do not have permission to access this area.', 'danger')
+        return redirect(url_for('main.index'))
+
 @bp.route('/')
 @login_required
-@admin_required
 def index():
-    return render_template('admin/index.html', now=datetime.utcnow())
+    # Get counts for dashboard stats
+    departments_count = Department.query.count()
+    subjects_count = Subject.query.count()
+    materials_count = Material.query.count()
+    total_downloads = sum(material.downloads for material in Material.query.all())
+    
+    # Get recent activities (mock data for now)
+    recent_activities = [
+        {
+            'type': 'primary',
+            'action': 'Added',
+            'description': 'New department: Computer Science',
+            'date': datetime.utcnow() - timedelta(hours=2)
+        },
+        {
+            'type': 'success',
+            'action': 'Updated',
+            'description': 'Subject: Programming Fundamentals',
+            'date': datetime.utcnow() - timedelta(hours=3)
+        },
+        {
+            'type': 'info',
+            'action': 'Uploaded',
+            'description': 'New material: Python Basics PDF',
+            'date': datetime.utcnow() - timedelta(hours=4)
+        }
+    ]
+    
+    return render_template('admin/dashboard.html',
+                         departments_count=departments_count,
+                         subjects_count=subjects_count,
+                         materials_count=materials_count,
+                         total_downloads=total_downloads,
+                         recent_activities=recent_activities)
 
 # Department management
 @bp.route('/departments')
 @login_required
-@admin_required
 def departments():
-    query = request.args.get('q', '')
-    if query:
-        departments = Department.query.filter(
-            Department.name.ilike(f'%{query}%')
-        ).all()
-    else:
-        departments = Department.query.all()
-    return render_template('admin/departments.html', departments=departments, now=datetime.utcnow())
+    departments = Department.query.all()
+    return render_template('admin/departments.html', departments=departments)
 
-@bp.route('/department/new', methods=['GET', 'POST'])
+@bp.route('/add-department', methods=['GET', 'POST'])
 @login_required
-@admin_required
-def new_department():
+def add_department():
     form = DepartmentForm()
     if form.validate_on_submit():
-        department = Department()
-        department.name = form.name.data
+        department = Department(name=form.name.data, description=form.description.data)
         db.session.add(department)
         db.session.commit()
-        flash('Department added successfully!', 'success')
+        flash('Department added successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/department_form.html', form=form, title='New Department', now=datetime.utcnow())
+    return render_template('admin/add_department.html', form=form)
 
-@bp.route('/department/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route('/edit-department/<int:id>', methods=['GET', 'POST'])
 @login_required
-@admin_required
 def edit_department(id):
     department = Department.query.get_or_404(id)
     form = DepartmentForm(obj=department)
     if form.validate_on_submit():
         department.name = form.name.data
+        department.description = form.description.data
         db.session.commit()
-        flash('Department updated successfully!', 'success')
+        flash('Department updated successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/department_form.html', form=form, title='Edit Department', now=datetime.utcnow())
+    return render_template('admin/edit_department.html', form=form, department=department)
+
+@bp.route('/delete-department/<int:id>')
+@login_required
+def delete_department(id):
+    department = Department.query.get_or_404(id)
+    db.session.delete(department)
+    db.session.commit()
+    flash('Department deleted successfully.', 'success')
+    return redirect(url_for('admin.departments'))
 
 # Subject management
 @bp.route('/subjects')
 @login_required
-@admin_required
 def subjects():
-    query = request.args.get('q', '')
-    if query:
-        subjects = Subject.query.join(Department).filter(
-            or_(
-                Subject.name.ilike(f'%{query}%'),
-                Department.name.ilike(f'%{query}%')
-            )
-        ).all()
-    else:
-        subjects = Subject.query.all()
-    return render_template('admin/subjects.html', subjects=subjects, now=datetime.utcnow())
+    subjects = Subject.query.all()
+    return render_template('admin/subjects.html', subjects=subjects)
 
-@bp.route('/subject/new', methods=['GET', 'POST'])
+@bp.route('/add-subject', methods=['GET', 'POST'])
 @login_required
-@admin_required
-def new_subject():
+def add_subject():
     form = SubjectForm()
+    form.department_id.choices = [(d.id, d.name) for d in Department.query.all()]
     if form.validate_on_submit():
-        subject = Subject()
-        subject.name = form.name.data
-        subject.department_id = form.department_id.data
+        subject = Subject(name=form.name.data,
+                        description=form.description.data,
+                        department_id=form.department_id.data)
         db.session.add(subject)
         db.session.commit()
-        flash('Subject added successfully!', 'success')
+        flash('Subject added successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/subject_form.html', form=form, title='New Subject', now=datetime.utcnow())
+    return render_template('admin/add_subject.html', form=form)
 
-@bp.route('/subject/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route('/edit-subject/<int:id>', methods=['GET', 'POST'])
 @login_required
-@admin_required
 def edit_subject(id):
     subject = Subject.query.get_or_404(id)
     form = SubjectForm(obj=subject)
+    form.department_id.choices = [(d.id, d.name) for d in Department.query.all()]
     if form.validate_on_submit():
         subject.name = form.name.data
+        subject.description = form.description.data
         subject.department_id = form.department_id.data
         db.session.commit()
-        flash('Subject updated successfully!', 'success')
+        flash('Subject updated successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/subject_form.html', form=form, title='Edit Subject', now=datetime.utcnow())
+    return render_template('admin/edit_subject.html', form=form, subject=subject)
+
+@bp.route('/delete-subject/<int:id>')
+@login_required
+def delete_subject(id):
+    subject = Subject.query.get_or_404(id)
+    db.session.delete(subject)
+    db.session.commit()
+    flash('Subject deleted successfully.', 'success')
+    return redirect(url_for('admin.subjects'))
 
 # Material management
 @bp.route('/materials')
 @login_required
-@admin_required
 def materials():
-    query = request.args.get('q', '')
-    if query:
-        materials = Material.query.join(Subject).join(Department).filter(
-            or_(
-                Material.title.ilike(f'%{query}%'),
-                Material.description.ilike(f'%{query}%'),
-                Subject.name.ilike(f'%{query}%'),
-                Department.name.ilike(f'%{query}%')
-            )
-        ).all()
-    else:
-        materials = Material.query.all()
-    return render_template('admin/materials.html', materials=materials, now=datetime.utcnow())
+    materials = Material.query.all()
+    return render_template('admin/materials.html', materials=materials)
 
-@bp.route('/material/new', methods=['GET', 'POST'])
+@bp.route('/add-material', methods=['GET', 'POST'])
 @login_required
-@admin_required
-def new_material():
+def add_material():
     form = MaterialForm()
+    form.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") 
+                              for s in Subject.query.join(Department).all()]
     if form.validate_on_submit():
-        file = form.file.data
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        file.save(os.path.join(current_app.root_path, file_path))
-        
-        material = Material()
-        material.title = form.title.data
-        material.description = form.description.data
-        material.filename = filename
-        material.file_type = filename.rsplit('.', 1)[1].lower()
-        material.file_size = os.path.getsize(os.path.join(current_app.root_path, file_path))
-        material.subject_id = form.subject_id.data
-        material.uploaded_by = current_user.id
-        
+        material = Material(title=form.title.data,
+                          description=form.description.data,
+                          subject_id=form.subject_id.data,
+                          file_path=form.file_path.data)
         db.session.add(material)
         db.session.commit()
-        flash('Material added successfully!', 'success')
+        flash('Material added successfully.', 'success')
         return redirect(url_for('admin.materials'))
-    return render_template('admin/material_form.html', form=form, title='New Material', now=datetime.utcnow())
+    return render_template('admin/add_material.html', form=form)
 
-@bp.route('/material/<int:id>/edit', methods=['GET', 'POST'])
+@bp.route('/edit-material/<int:id>', methods=['GET', 'POST'])
 @login_required
-@admin_required
 def edit_material(id):
     material = Material.query.get_or_404(id)
     form = MaterialForm(obj=material)
+    form.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") 
+                              for s in Subject.query.join(Department).all()]
     if form.validate_on_submit():
-        if form.file.data:
-            # Delete old file
-            old_file_path = os.path.join(current_app.root_path, current_app.config['UPLOAD_FOLDER'], material.filename)
-            if os.path.exists(old_file_path):
-                os.remove(old_file_path)
-            
-            # Save new file
-            file = form.file.data
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(os.path.join(current_app.root_path, file_path))
-            
-            material.filename = filename
-            material.file_type = filename.rsplit('.', 1)[1].lower()
-            material.file_size = os.path.getsize(os.path.join(current_app.root_path, file_path))
-        
         material.title = form.title.data
         material.description = form.description.data
         material.subject_id = form.subject_id.data
+        material.file_path = form.file_path.data
         db.session.commit()
-        flash('Material updated successfully!', 'success')
+        flash('Material updated successfully.', 'success')
         return redirect(url_for('admin.materials'))
-    return render_template('admin/material_form.html', form=form, title='Edit Material', now=datetime.utcnow()) 
+    return render_template('admin/edit_material.html', form=form, material=material)
 
-@bp.route('/material/<int:id>/delete')
+@bp.route('/delete-material/<int:id>')
 @login_required
-@admin_required
 def delete_material(id):
     material = Material.query.get_or_404(id)
-    
-    # Delete the file from storage
-    file_path = os.path.join(current_app.root_path, current_app.config['UPLOAD_FOLDER'], material.filename)
-    if os.path.exists(file_path):
-        os.remove(file_path)
-    
-    # Delete the database record
     db.session.delete(material)
     db.session.commit()
-    
-    flash('Material deleted successfully!', 'success')
+    flash('Material deleted successfully.', 'success')
     return redirect(url_for('admin.materials')) 
-
-@bp.route('/department/<int:id>/delete')
-@login_required
-@admin_required
-def delete_department(id):
-    department = Department.query.get_or_404(id)
-    
-    # Check if department has any subjects
-    if department.subjects.count() > 0:
-        flash('Cannot delete department that contains subjects. Please delete all subjects first.', 'danger')
-        return redirect(url_for('admin.departments'))
-    
-    db.session.delete(department)
-    db.session.commit()
-    flash('Department deleted successfully!', 'success')
-    return redirect(url_for('admin.departments'))
-
-@bp.route('/subject/<int:id>/delete')
-@login_required
-@admin_required
-def delete_subject(id):
-    subject = Subject.query.get_or_404(id)
-    
-    # Check if subject has any materials
-    if subject.materials.count() > 0:
-        flash('Cannot delete subject that contains materials. Please delete all materials first.', 'danger')
-        return redirect(url_for('admin.subjects'))
-    
-    db.session.delete(subject)
-    db.session.commit()
-    flash('Subject deleted successfully!', 'success')
-    return redirect(url_for('admin.subjects')) 
