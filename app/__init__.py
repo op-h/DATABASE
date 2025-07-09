@@ -6,6 +6,7 @@ from flask_login import LoginManager
 from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
 from config import Config
+from datetime import datetime
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -63,5 +64,9 @@ def create_app(config_class=Config):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    @app.context_processor
+    def utility_processor():
+        return {'now': datetime.utcnow()}
 
     return app 
