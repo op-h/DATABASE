@@ -32,7 +32,7 @@ class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    subjects = db.relationship('Subject', backref='department', lazy='dynamic')
+    subjects = db.relationship('Subject', backref='department', lazy='dynamic', cascade="all, delete-orphan")
 
 class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
