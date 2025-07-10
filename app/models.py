@@ -40,7 +40,7 @@ class Subject(db.Model):
     code = db.Column(db.String(20), nullable=False)
     description = db.Column(db.Text)
     department_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
-    materials = db.relationship('Material', backref='subject', lazy='dynamic')
+    materials = db.relationship('Material', backref='subject', lazy='dynamic', cascade="all, delete-orphan")
 
 class Material(db.Model):
     id = db.Column(db.Integer, primary_key=True)
