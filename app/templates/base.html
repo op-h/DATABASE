@@ -3,275 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}MTU Course Materials{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
+    <title>{% block title %}OPH{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #3498db;
-            --text-color: #2c3e50;
-            --light-gray: #ecf0f1;
-            --border-color: #bdc3c7;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-        
-        .navbar {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .navbar-brand {
-            font-weight: 600;
-            color: var(--primary-color) !important;
-        }
-        
-        .nav-link {
-            color: var(--text-color) !important;
-            font-weight: 500;
-            transition: color 0.2s ease;
-        }
-        
-        .nav-link:hover {
-            color: var(--accent-color) !important;
-        }
-        
-        .btn-primary {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            font-weight: 500;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-            border-color: #2980b9;
-        }
-        
-        .btn-outline-primary {
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-            font-weight: 500;
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        
-        .card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: box-shadow 0.2s ease;
-        }
-        
-        .card:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .card-title {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .form-control {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.75rem;
-        }
-        
-        .form-control:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-        }
-        
-        .alert {
-            border-radius: 6px;
-            border: none;
-        }
-        
-        .badge {
-            font-weight: 500;
-            padding: 0.5em 0.75em;
-        }
-        
-        .text-muted {
-            color: #7f8c8d !important;
-        }
-        
-        .footer {
-            background-color: var(--light-gray);
-            border-top: 1px solid var(--border-color);
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .search-box {
-            border-radius: 8px;
-        }
-        
-        .file-type-badge {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-        
-        .file-type-pdf { background-color: #e74c3c; color: white; }
-        .file-type-docx { background-color: #3498db; color: white; }
-        .file-type-pptx { background-color: #e67e22; color: white; }
-        .file-type-txt { background-color: #95a5a6; color: white; }
-        .file-type-jpg, .file-type-png { background-color: #27ae60; color: white; }
-        
-        .department-badge {
-            background-color: var(--light-gray);
-            color: var(--text-color);
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-        
-        .stats-card {
-            text-align: center;
-            padding: 2rem;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-        
-        .stats-card h3 {
-            color: var(--accent-color);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background-color: var(--light-gray);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            padding: 4rem 0;
-        }
-        
-        .section-title {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #222; }
+        .navbar { background: #fff; border-bottom: 1px solid #eee; }
+        .footer { background: #fafafa; border-top: 1px solid #eee; padding: 1rem 0; margin-top: 2rem; }
     </style>
-    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <i class="fas fa-graduation-cap me-2"></i>
-                MTU Course Materials
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">
-                            <i class="fas fa-home me-1"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.materials') }}">
-                            <i class="fas fa-book me-1"></i>Materials
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.departments') }}">
-                            <i class="fas fa-building me-1"></i>Departments
-                        </a>
-                    </li>
-                </ul>
-                
-                <!-- Search Form -->
-                <form class="d-flex me-3" method="GET" action="{{ url_for('main.search') }}">
-                    <div class="input-group">
-                        <input type="search" name="q" class="form-control search-box" 
-                               placeholder="Search materials..." 
-                               value="{{ request.args.get('q', '') }}">
-                        <button class="btn btn-outline-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- User Menu -->
-                <ul class="navbar-nav">
-                    {% if current_user.is_authenticated %}
-                        {% if current_user.is_admin %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url_for('admin.index') }}">
-                                    <i class="fas fa-cog me-1"></i>Admin
-                                </a>
-                            </li>
-                        {% endif %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i>{{ current_user.email }}
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                </a></li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i>Login
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
+            <a class="navbar-brand" href="/">OPH</a>
         </div>
     </nav>
-
-    <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="container mt-3">
@@ -284,64 +30,13 @@
             </div>
         {% endif %}
     {% endwith %}
-
-    <!-- Main Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="mb-3">MTU Course Materials</h5>
-                    <p class="text-muted mb-0">
-                        Middle Technical University's comprehensive course materials repository.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-unstyled mb-0">
-                        <li><a href="{{ url_for('main.index') }}" class="text-muted text-decoration-none">Home</a></li>
-                        <li><a href="{{ url_for('main.materials') }}" class="text-muted text-decoration-none">Materials</a></li>
-                        <li><a href="{{ url_for('main.departments') }}" class="text-muted text-decoration-none">Departments</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-3">
-            <div class="text-center text-muted">
-                <small>&copy; 2024 Middle Technical University. All rights reserved.</small>
-            </div>
-        </div>
+    <footer class="footer text-center">
+        <small>© OPH 2024. All rights reserved.</small>
     </footer>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom JavaScript -->
-    <script>
-        // Auto-hide alerts after 5 seconds
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-        
-        // Search debouncing
-        let searchTimeout;
-        const searchInput = document.querySelector('input[name="q"]');
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(function() {
-                    // Optional: Add live search functionality here
-                }, 300);
-            });
-        }
-    </script>
-    
     {% block extra_js %}{% endblock %}
 </body>
 </html> 

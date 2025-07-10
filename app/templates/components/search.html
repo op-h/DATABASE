@@ -1,13 +1,6 @@
-<form class="search-form mb-4" action="{{ search_url }}" method="get">
+<form method="GET" action="{{ url_for('main.search') }}">
     <div class="input-group">
-        <input type="search" 
-               class="form-control" 
-               name="q" 
-               value="{{ request.args.get('q', '') }}" 
-               placeholder="{{ placeholder|default('Quick Search...') }}"
-               aria-label="Search">
-        <button class="btn btn-primary" type="submit">
-            <i class="fas fa-search me-1"></i>Search
-        </button>
+        <input type="search" name="q" class="form-control" placeholder="Search...">
+        <button class="btn btn-primary" type="submit">Search</button>
     </div>
 </form> 
