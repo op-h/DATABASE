@@ -23,9 +23,10 @@ def index():
     # Get recent materials (last 6)
     recent_materials = Material.query.order_by(desc(Material.upload_date)).limit(6).all()
     
-    # Add material counts to departments
+    # Add material counts and subject counts to departments
     for department in departments:
-        department.materials = Material.query.join(Subject).filter(Subject.department_id == department.id).all()
+        department.material_count = Material.query.join(Subject).filter(Subject.department_id == department.id).count()
+        department.subject_count = Subject.query.filter(Subject.department_id == department.id).count()
     
     return render_template('index.html',
                          departments=departments,

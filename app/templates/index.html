@@ -129,13 +129,13 @@
                             </div>
                             <div>
                                 <h5 class="card-title mb-1">{{ department.name }}</h5>
-                                <span class="department-badge">{{ department.subjects|length }} Subjects</span>
+                                <span class="department-badge">{{ department.subject_count }} Subjects</span>
                             </div>
                         </div>
                         <p class="card-text text-muted">{{ department.description or 'No description available.' }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">
-                                {{ department.materials|length }} Materials
+                                {{ department.material_count }} Materials
                             </small>
                             <a href="{{ url_for('main.department', id=department.id) }}" class="btn btn-outline-primary btn-sm">
                                 View Materials
