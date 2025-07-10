@@ -4,50 +4,19 @@
 
 {% block content %}
 <div class="container py-5">
-    <!-- Header -->
+    <!-- Page Header -->
     <div class="row mb-5">
         <div class="col-12">
-            <h1 class="fw-bold mb-3">Academic Departments</h1>
-            <p class="lead text-muted">Explore course materials organized by academic departments at MTU.</p>
-        </div>
-    </div>
-
-    <!-- Statistics -->
-    <div class="row mb-5">
-        <div class="col-md-4">
-            <div class="stats-card text-center">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-building"></i>
-                </div>
-                <h3 class="fw-bold">{{ departments|length }}</h3>
-                <p class="mb-0">Total Departments</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="stats-card text-center">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h3 class="fw-bold">{{ departments|sum(attribute='subject_count') }}</h3>
-                <p class="mb-0">Total Subjects</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="stats-card text-center">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <h3 class="fw-bold">{{ departments|sum(attribute='material_count') }}</h3>
-                <p class="mb-0">Total Materials</p>
-            </div>
+            <h1 class="section-title">Academic Departments</h1>
+            <p class="section-subtitle">Explore course materials organized by department</p>
         </div>
     </div>
 
     <!-- Departments Grid -->
     <div class="row g-4">
         {% for department in departments %}
-        <div class="col-lg-6 col-xl-4">
-            <div class="card material-item h-100">
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <div class="feature-icon me-3">
@@ -59,24 +28,16 @@
                         </div>
                     </div>
                     
-                    <p class="card-text text-muted mb-4">
-                        {{ department.description or 'No description available.' }}
-                    </p>
+                    <p class="card-text text-muted">{{ department.description or 'No description available.' }}</p>
                     
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="d-flex align-items-center text-muted">
-                            <i class="fas fa-file-alt me-1"></i>
-                            <small>{{ department.material_count }} Materials</small>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-muted">
+                            <small>
+                                <i class="fas fa-file-alt me-1"></i>{{ department.material_count }} Materials
+                            </small>
                         </div>
-                        <div class="d-flex align-items-center text-muted">
-                            <i class="fas fa-book-open me-1"></i>
-                            <small>{{ department.subject_count }} Subjects</small>
-                        </div>
-                    </div>
-                    
-                    <div class="d-grid">
                         <a href="{{ url_for('main.department', id=department.id) }}" class="btn btn-primary">
-                            <i class="fas fa-eye me-2"></i>View Materials
+                            View Materials
                         </a>
                     </div>
                 </div>
@@ -85,18 +46,16 @@
         {% endfor %}
     </div>
 
+    <!-- Empty State -->
     {% if not departments %}
-    <!-- No Departments -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <div class="feature-icon mx-auto mb-3">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h4 class="fw-bold mb-3">No Departments Available</h4>
-                    <p class="text-muted mb-4">No departments have been created yet. Please check back later!</p>
+            <div class="text-center py-5">
+                <div class="feature-icon mx-auto mb-3">
+                    <i class="fas fa-building"></i>
                 </div>
+                <h4 class="text-muted">No departments available</h4>
+                <p class="text-muted">Departments will be added by administrators.</p>
             </div>
         </div>
     </div>

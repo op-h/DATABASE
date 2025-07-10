@@ -3,193 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - MTU Course Materials</title>
+    <title>{% block title %}MTU Course Materials{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #64748b;
-            --success-color: #059669;
-            --warning-color: #d97706;
-            --danger-color: #dc2626;
-            --light-bg: #f8fafc;
-            --dark-bg: #1e293b;
-            --border-color: #e2e8f0;
-        }
-        
-        * {
-            font-family: 'Inter', sans-serif;
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+            --light-gray: #ecf0f1;
+            --border-color: #bdc3c7;
         }
         
         body {
-            background-color: var(--light-bg);
-            color: #334155;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
         }
         
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border-color);
         }
         
         .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color) !important;
         }
         
         .nav-link {
+            color: var(--text-color) !important;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: color 0.2s ease;
         }
         
         .nav-link:hover {
-            transform: translateY(-2px);
-        }
-        
-        .hero-section {
-            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 3rem;
-        }
-        
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn {
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
+            color: var(--accent-color) !important;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
-            border: none;
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 500;
         }
         
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            background-color: #2980b9;
+            border-color: #2980b9;
         }
         
-        .search-box {
-            background: white;
-            border-radius: 50px;
-            padding: 0.75rem 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 500;
         }
         
-        .search-box:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .form-control {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .alert {
+            border-radius: 6px;
+            border: none;
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.5em 0.75em;
+        }
+        
+        .text-muted {
+            color: #7f8c8d !important;
         }
         
         .footer {
-            background: var(--dark-bg);
-            color: white;
-            padding: 3rem 0 1rem;
-            margin-top: 4rem;
+            background-color: var(--light-gray);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .search-box {
+            border-radius: 8px;
+        }
+        
+        .file-type-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .file-type-pdf { background-color: #e74c3c; color: white; }
+        .file-type-docx { background-color: #3498db; color: white; }
+        .file-type-pptx { background-color: #e67e22; color: white; }
+        .file-type-txt { background-color: #95a5a6; color: white; }
+        .file-type-jpg, .file-type-png { background-color: #27ae60; color: white; }
+        
+        .department-badge {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
         }
         
         .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 16px;
-            padding: 2rem;
             text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .stats-card h3 {
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
         
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+            background-color: var(--light-gray);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--accent-color);
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
         
-        .loading-spinner {
-            display: none;
-        }
-        
-        .search-results {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .material-item {
-            border-left: 4px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        
-        .material-item:hover {
-            background-color: #f1f5f9;
-            transform: translateX(4px);
-        }
-        
-        .department-badge {
-            background: linear-gradient(135deg, #10b981, #059669);
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
+            padding: 4rem 0;
         }
         
-        .file-type-badge {
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
         
-        .file-type-pdf { background-color: #fef2f2; color: #dc2626; }
-        .file-type-docx { background-color: #eff6ff; color: #2563eb; }
-        .file-type-pptx { background-color: #fef3c7; color: #d97706; }
-        .file-type-txt { background-color: #f3f4f6; color: #374151; }
-        
-        .alert {
-            border: none;
-            border-radius: 12px;
-            border-left: 4px solid;
-        }
-        
-        .alert-success { border-left-color: var(--success-color); }
-        .alert-danger { border-left-color: var(--danger-color); }
-        .alert-warning { border-left-color: var(--warning-color); }
-        .alert-info { border-left-color: var(--primary-color); }
-        
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 2rem 0;
-            }
-            
-            .navbar-brand {
-                font-size: 1.25rem;
-            }
+        .section-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
     </style>
     
@@ -197,7 +197,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
                 <i class="fas fa-graduation-cap me-2"></i>
@@ -225,60 +225,46 @@
                             <i class="fas fa-building me-1"></i>Departments
                         </a>
                     </li>
-                    {% if current_user.is_authenticated and current_user.is_admin %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-cog me-1"></i>Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('admin.index') }}">
-                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.materials') }}">
-                                <i class="fas fa-file-alt me-2"></i>Materials
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.subjects') }}">
-                                <i class="fas fa-book-open me-2"></i>Subjects
-                            </a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('admin.departments') }}">
-                                <i class="fas fa-building me-2"></i>Departments
-                            </a></li>
-                        </ul>
-                    </li>
-                    {% endif %}
                 </ul>
                 
-                <!-- Search Box -->
+                <!-- Search Form -->
                 <form class="d-flex me-3" method="GET" action="{{ url_for('main.search') }}">
                     <div class="input-group">
-                        <input class="form-control search-box" type="search" name="q" 
+                        <input type="search" name="q" class="form-control search-box" 
                                placeholder="Search materials..." 
-                               value="{{ request.args.get('q', '') }}"
-                               aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">
+                               value="{{ request.args.get('q', '') }}">
+                        <button class="btn btn-outline-primary" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                 </form>
                 
+                <!-- User Menu -->
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i>{{ current_user.email }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                            </a></li>
-                        </ul>
-                    </li>
+                        {% if current_user.is_admin %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('admin.index') }}">
+                                    <i class="fas fa-cog me-1"></i>Admin
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ current_user.email }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a></li>
+                            </ul>
+                        </li>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">
-                            <i class="fas fa-sign-in-alt me-1"></i>Login
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>
@@ -291,7 +277,6 @@
             <div class="container mt-3">
                 {% for category, message in messages %}
                     <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
-                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }} me-2"></i>
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
@@ -309,30 +294,23 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5><i class="fas fa-graduation-cap me-2"></i>MTU Course Materials</h5>
-                    <p class="text-muted">A comprehensive platform for accessing and managing educational materials across various departments at MTU.</p>
+                <div class="col-md-6">
+                    <h5 class="mb-3">MTU Course Materials</h5>
+                    <p class="text-muted mb-0">
+                        Middle Technical University's comprehensive course materials repository.
+                    </p>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h6>Quick Links</h6>
-                    <ul class="list-unstyled">
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-unstyled mb-0">
                         <li><a href="{{ url_for('main.index') }}" class="text-muted text-decoration-none">Home</a></li>
                         <li><a href="{{ url_for('main.materials') }}" class="text-muted text-decoration-none">Materials</a></li>
                         <li><a href="{{ url_for('main.departments') }}" class="text-muted text-decoration-none">Departments</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h6>Contact Information</h6>
-                    <ul class="list-unstyled text-muted">
-                        <li><i class="fas fa-envelope me-2"></i>pbeb4003@mtu.edu.iq</li>
-                        <li><i class="fas fa-phone me-2"></i>+964 776 178 1031</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i>Baghdad, Iraq</li>
-                    </ul>
-                </div>
             </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p class="text-muted mb-0">&copy; 2025 Middle Technical University. All rights reserved.</p>
+            <hr class="my-3">
+            <div class="text-center text-muted">
+                <small>&copy; 2024 Middle Technical University. All rights reserved.</small>
             </div>
         </div>
     </footer>
@@ -344,57 +322,24 @@
     <script>
         // Auto-hide alerts after 5 seconds
         setTimeout(function() {
-            const alerts = document.querySelectorAll('.alert');
+            var alerts = document.querySelectorAll('.alert');
             alerts.forEach(function(alert) {
-                const bsAlert = new bootstrap.Alert(alert);
+                var bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
             });
         }, 5000);
         
-        // Search functionality with debouncing
+        // Search debouncing
         let searchTimeout;
         const searchInput = document.querySelector('input[name="q"]');
         if (searchInput) {
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(function() {
-                    // Add loading state
-                    const searchButton = searchInput.nextElementSibling;
-                    const originalContent = searchButton.innerHTML;
-                    searchButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                    
-                    // Submit form after delay
-                    setTimeout(function() {
-                        searchInput.form.submit();
-                    }, 300);
-                }, 500);
+                    // Optional: Add live search functionality here
+                }, 300);
             });
         }
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-        
-        // Add loading states to forms
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function() {
-                const submitBtn = form.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-                }
-            });
-        });
     </script>
     
     {% block extra_js %}{% endblock %}

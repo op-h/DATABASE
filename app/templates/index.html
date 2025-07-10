@@ -7,35 +7,24 @@
 <section class="hero-section">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold mb-4">
-                    Welcome to MTU Course Materials
-                </h1>
-                <p class="lead mb-4">
-                    Access comprehensive educational resources across all departments at Middle Technical University. 
-                    Find lecture notes, presentations, assignments, and more to enhance your learning experience.
-                </p>
-                <div class="d-flex gap-3">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4">MTU Course Materials Repository</h1>
+                <p class="lead mb-4">Access comprehensive educational resources from Middle Technical University's academic departments.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
                     <a href="{{ url_for('main.materials') }}" class="btn btn-light btn-lg">
-                        <i class="fas fa-search me-2"></i>Browse Materials
+                        <i class="fas fa-book me-2"></i>Browse Materials
                     </a>
                     <a href="{{ url_for('main.departments') }}" class="btn btn-outline-light btn-lg">
                         <i class="fas fa-building me-2"></i>View Departments
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <div class="feature-icon mx-auto">
-                    <i class="fas fa-graduation-cap"></i>
-                </div>
-                <h3 class="text-white-50 mt-3">Quality Education Resources</h3>
-            </div>
         </div>
     </div>
 </section>
 
 <!-- Statistics Section -->
-<section class="py-5">
+<section class="py-5 bg-light">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-3">
@@ -79,16 +68,16 @@
 </section>
 
 <!-- Search Section -->
-<section class="py-5 bg-white">
+<section class="py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
-                <h2 class="fw-bold mb-4">Find Your Course Materials</h2>
-                <p class="lead mb-5">Search through thousands of educational resources by department, subject, or keywords.</p>
+                <h2 class="section-title">Find Course Materials</h2>
+                <p class="section-subtitle">Search through our comprehensive collection of educational resources.</p>
                 
                 <form method="GET" action="{{ url_for('main.search') }}" class="mb-4">
                     <div class="input-group input-group-lg">
-                        <input type="search" name="q" class="form-control search-box" 
+                        <input type="search" name="q" class="form-control" 
                                placeholder="Search for materials, subjects, or departments..." 
                                value="{{ request.args.get('q', '') }}">
                         <button class="btn btn-primary" type="submit">
@@ -96,32 +85,25 @@
                         </button>
                     </div>
                 </form>
-                
-                <div class="d-flex justify-content-center gap-2 flex-wrap">
-                    <span class="badge bg-light text-dark">PDF Documents</span>
-                    <span class="badge bg-light text-dark">PowerPoint Presentations</span>
-                    <span class="badge bg-light text-dark">Word Documents</span>
-                    <span class="badge bg-light text-dark">Text Files</span>
-                </div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Departments Section -->
-<section class="py-5">
+<section class="py-5 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2 class="fw-bold">Browse by Department</h2>
-                <p class="lead text-muted">Explore materials organized by academic departments</p>
+                <h2 class="section-title">Browse by Department</h2>
+                <p class="section-subtitle">Explore materials organized by academic departments</p>
             </div>
         </div>
         
         <div class="row g-4">
             {% for department in departments %}
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100 material-item">
+                <div class="card h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="feature-icon me-3">
@@ -150,19 +132,19 @@
 </section>
 
 <!-- Recent Materials Section -->
-<section class="py-5 bg-white">
+<section class="py-5">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2 class="fw-bold">Recently Added Materials</h2>
-                <p class="lead text-muted">Latest educational resources uploaded to the platform</p>
+                <h2 class="section-title">Recently Added Materials</h2>
+                <p class="section-subtitle">Latest educational resources uploaded to the platform</p>
             </div>
         </div>
         
         <div class="row g-4">
             {% for material in recent_materials %}
             <div class="col-lg-6">
-                <div class="card material-item">
+                <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div class="flex-grow-1">
@@ -203,48 +185,6 @@
             </a>
         </div>
         {% endif %}
-    </div>
-</section>
-
-<!-- Features Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center mb-5">
-                <h2 class="fw-bold">Why Choose MTU Course Materials?</h2>
-                <p class="lead text-muted">Comprehensive features designed for modern education</p>
-            </div>
-        </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="text-center">
-                    <div class="feature-icon mx-auto">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h4 class="fw-bold mt-3">Advanced Search</h4>
-                    <p class="text-muted">Find exactly what you need with our powerful search functionality across departments, subjects, and content.</p>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="text-center">
-                    <div class="feature-icon mx-auto">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h4 class="fw-bold mt-3">Mobile Friendly</h4>
-                    <p class="text-muted">Access your course materials anywhere, anytime with our responsive design that works on all devices.</p>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="text-center">
-                    <div class="feature-icon mx-auto">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h4 class="fw-bold mt-3">Secure & Reliable</h4>
-                    <p class="text-muted">Your educational resources are safely stored and easily accessible with our secure platform.</p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 

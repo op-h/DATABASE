@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Materials{% endblock %}
+{% block title %}Course Materials{% endblock %}
 
 {% block content %}
 <div class="container py-5">
-    <!-- Header -->
+    <!-- Page Header -->
     <div class="row mb-5">
         <div class="col-12">
-            <h1 class="fw-bold mb-3">Course Materials</h1>
-            <p class="lead text-muted">Browse and search through our comprehensive collection of educational resources.</p>
+            <h1 class="section-title">Course Materials</h1>
+            <p class="section-subtitle">Browse and download educational resources from all departments</p>
         </div>
     </div>
 
@@ -20,17 +20,16 @@
                     <form method="GET" action="{{ url_for('main.materials') }}">
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label for="q" class="form-label">Search</label>
-                                <input type="text" class="form-control" id="q" name="q" 
-                                       value="{{ search }}" placeholder="Search materials...">
+                                <label for="search" class="form-label">Search</label>
+                                <input type="text" class="form-control" id="search" name="q" 
+                                       placeholder="Search materials..." value="{{ search }}">
                             </div>
                             <div class="col-md-3">
                                 <label for="department" class="form-label">Department</label>
                                 <select class="form-select" id="department" name="department">
                                     <option value="">All Departments</option>
                                     {% for dept in departments %}
-                                    <option value="{{ dept.id }}" 
-                                            {% if selected_department == dept.id %}selected{% endif %}>
+                                    <option value="{{ dept.id }}" {% if selected_department == dept.id %}selected{% endif %}>
                                         {{ dept.name }}
                                     </option>
                                     {% endfor %}
@@ -41,9 +40,8 @@
                                 <select class="form-select" id="subject" name="subject">
                                     <option value="">All Subjects</option>
                                     {% for subj in subjects %}
-                                    <option value="{{ subj.id }}" 
-                                            {% if selected_subject == subj.id %}selected{% endif %}>
-                                        {{ subj.department.name }} - {{ subj.name }}
+                                    <option value="{{ subj.id }}" {% if selected_subject == subj.id %}selected{% endif %}>
+                                        {{ subj.name }}
                                     </option>
                                     {% endfor %}
                                 </select>
@@ -61,11 +59,11 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search me-2"></i>Search
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="fas fa-search me-1"></i>Search
                                 </button>
-                                <a href="{{ url_for('main.materials') }}" class="btn btn-outline-secondary ms-2">
-                                    <i class="fas fa-times me-2"></i>Clear
+                                <a href="{{ url_for('main.materials') }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-1"></i>Clear
                                 </a>
                             </div>
                         </div>
@@ -78,30 +76,21 @@
     <!-- Results Count -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    {% if search or selected_department or selected_subject or selected_type %}
-                        Found {{ materials|length }} material(s)
-                    {% else %}
-                        All Materials ({{ materials|length }})
-                    {% endif %}
-                </h5>
-                <div class="d-flex gap-2">
-                    <span class="badge bg-primary">{{ materials|length }} Total</span>
-                    {% if search %}
-                    <span class="badge bg-info">Search: "{{ search }}"</span>
-                    {% endif %}
-                </div>
-            </div>
+            <p class="text-muted mb-0">
+                Showing {{ materials|length }} material{{ 's' if materials|length != 1 else '' }}
+                {% if search or selected_department or selected_subject or selected_type %}
+                    matching your criteria
+                {% endif %}
+            </p>
         </div>
     </div>
 
-    <!-- Materials Grid -->
+    <!-- Materials List -->
     {% if materials %}
     <div class="row g-4">
         {% for material in materials %}
         <div class="col-lg-6">
-            <div class="card material-item h-100">
+            <div class="card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="flex-grow-1">
@@ -115,9 +104,7 @@
                         </span>
                     </div>
                     
-                    <p class="card-text text-muted">
-                        {{ material.description or 'No description available.' }}
-                    </p>
+                    <p class="card-text text-muted">{{ material.description or 'No description available.' }}</p>
                     
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center text-muted">
@@ -128,10 +115,9 @@
                             <small>{{ material.download_count }} downloads</small>
                             <span class="mx-2">•</span>
                             <i class="fas fa-file me-1"></i>
-                            <small>{{ "%.1f"|format(material.file_size / 1024) }} KB</small>
+                            <small>{{ (material.file_size / 1024 / 1024) | round(1) }} MB</small>
                         </div>
-                        <a href="{{ url_for('main.download_material', id=material.id) }}" 
-                           class="btn btn-primary btn-sm">
+                        <a href="{{ url_for('main.download_material', id=material.id) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-download me-1"></i>Download
                         </a>
                     </div>
@@ -141,28 +127,17 @@
         {% endfor %}
     </div>
     {% else %}
-    <!-- No Results -->
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <div class="feature-icon mx-auto mb-3">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h4 class="fw-bold mb-3">No Materials Found</h4>
-                    <p class="text-muted mb-4">
-                        {% if search or selected_department or selected_subject or selected_type %}
-                            No materials match your current search criteria. Try adjusting your filters.
-                        {% else %}
-                            No materials have been uploaded yet. Check back later!
-                        {% endif %}
-                    </p>
-                    {% if search or selected_department or selected_subject or selected_type %}
-                    <a href="{{ url_for('main.materials') }}" class="btn btn-primary">
-                        <i class="fas fa-times me-2"></i>Clear Filters
-                    </a>
-                    {% endif %}
+            <div class="text-center py-5">
+                <div class="feature-icon mx-auto mb-3">
+                    <i class="fas fa-search"></i>
                 </div>
+                <h4 class="text-muted">No materials found</h4>
+                <p class="text-muted">Try adjusting your search criteria or browse all materials.</p>
+                <a href="{{ url_for('main.materials') }}" class="btn btn-primary">
+                    View All Materials
+                </a>
             </div>
         </div>
     </div>
