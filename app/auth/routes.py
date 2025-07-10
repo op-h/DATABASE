@@ -25,7 +25,7 @@ def login():
             next_page = url_for('main.index')
         return redirect(next_page)
     
-    return render_template('auth/login.html', title='Sign In', form=form, now=datetime.utcnow())
+    return render_template('auth/login.html', title='Sign In', form=form)
 
 @bp.route('/logout')
 @login_required

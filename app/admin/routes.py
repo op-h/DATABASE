@@ -104,7 +104,7 @@ def departments():
     for department in departments:
         department.material_count = Material.query.join(Subject).filter(Subject.department_id == department.id).count()
     
-    return render_template('admin/departments.html', departments=departments, now=datetime.utcnow())
+    return render_template('admin/departments.html', departments=departments)
 
 @bp.route('/add-department', methods=['GET', 'POST'])
 @login_required
@@ -116,7 +116,7 @@ def add_department():
         db.session.commit()
         flash('Department added successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/add_department.html', form=form, now=datetime.utcnow())
+    return render_template('admin/add_department.html', form=form)
 
 @bp.route('/edit-department/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -129,7 +129,7 @@ def edit_department(id):
         db.session.commit()
         flash('Department updated successfully.', 'success')
         return redirect(url_for('admin.departments'))
-    return render_template('admin/edit_department.html', form=form, department=department, now=datetime.utcnow())
+    return render_template('admin/edit_department.html', form=form, department=department)
 
 @bp.route('/delete-department/<int:id>')
 @login_required
@@ -145,7 +145,7 @@ def delete_department(id):
 @login_required
 def subjects():
     subjects = Subject.query.all()
-    return render_template('admin/subjects.html', subjects=subjects, now=datetime.utcnow())
+    return render_template('admin/subjects.html', subjects=subjects)
 
 @bp.route('/add-subject', methods=['GET', 'POST'])
 @login_required
@@ -161,7 +161,7 @@ def add_subject():
         db.session.commit()
         flash('Subject added successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/add_subject.html', form=form, now=datetime.utcnow())
+    return render_template('admin/add_subject.html', form=form)
 
 @bp.route('/edit-subject/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -177,7 +177,7 @@ def edit_subject(id):
         db.session.commit()
         flash('Subject updated successfully.', 'success')
         return redirect(url_for('admin.subjects'))
-    return render_template('admin/edit_subject.html', form=form, subject=subject, now=datetime.utcnow())
+    return render_template('admin/edit_subject.html', form=form, subject=subject)
 
 @bp.route('/delete-subject/<int:id>')
 @login_required
@@ -193,14 +193,12 @@ def delete_subject(id):
 @login_required
 def materials():
     materials = Material.query.all()
-    return render_template('admin/materials.html', materials=materials, now=datetime.utcnow())
+    return render_template('admin/materials.html', materials=materials)
 
 @bp.route('/add-material', methods=['GET', 'POST'])
 @login_required
 def add_material():
     form = MaterialForm()
-    form.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") 
-                              for s in Subject.query.join(Department).all()]
     if form.validate_on_submit():
         file = form.file.data
         if file and allowed_file(file.filename):
@@ -231,18 +229,16 @@ def add_material():
                 return redirect(url_for('admin.materials'))
             except Exception as e:
                 flash(f'Error uploading file: {str(e)}', 'danger')
-                return render_template('admin/add_material.html', form=form, now=datetime.utcnow())
+                return render_template('admin/add_material.html', form=form)
         else:
             flash('Invalid file type. Please upload a valid file.', 'danger')
-    return render_template('admin/add_material.html', form=form, now=datetime.utcnow())
+    return render_template('admin/add_material.html', form=form)
 
 @bp.route('/edit-material/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_material(id):
     material = Material.query.get_or_404(id)
     form = MaterialForm(obj=material)
-    form.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") 
-                              for s in Subject.query.join(Department).all()]
     if form.validate_on_submit():
         material.title = form.title.data
         material.description = form.description.data
@@ -272,15 +268,15 @@ def edit_material(id):
                     material.file_size = os.path.getsize(file_path)
                 except Exception as e:
                     flash(f'Error updating file: {str(e)}', 'danger')
-                    return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
+                    return render_template('admin/edit_material.html', form=form, material=material)
             else:
                 flash('Invalid file type. Please upload a valid file.', 'danger')
-                return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
+                return render_template('admin/edit_material.html', form=form, material=material)
         
         db.session.commit()
         flash('Material updated successfully.', 'success')
         return redirect(url_for('admin.materials'))
-    return render_template('admin/edit_material.html', form=form, material=material, now=datetime.utcnow())
+    return render_template('admin/edit_material.html', form=form, material=material)
 
 @bp.route('/delete-material/<int:id>')
 @login_required

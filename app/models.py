@@ -13,6 +13,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     is_admin = db.Column(db.Boolean, default=False)
+    
+    # Relationship to materials uploaded by this user
+    materials = db.relationship('Material', backref='uploader', lazy='dynamic')
 
     def __init__(self, email=None, is_admin=False):
         super().__init__()

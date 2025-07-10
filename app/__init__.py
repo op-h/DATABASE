@@ -65,6 +65,12 @@ def create_app(config_class=Config):
     except OSError:
         pass
 
+    # Ensure the uploads folder exists
+    try:
+        os.makedirs(app.config['UPLOAD_FOLDER'])
+    except OSError:
+        pass
+
     @app.context_processor
     def utility_processor():
         return {'now': datetime.utcnow()}

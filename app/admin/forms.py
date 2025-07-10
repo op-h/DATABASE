@@ -33,4 +33,6 @@ class MaterialForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(MaterialForm, self).__init__(*args, **kwargs)
-        self.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") for s in Subject.query.all()] 
+        # Join Subject with Department to avoid lazy loading issues
+        subjects = Subject.query.join(Department).all()
+        self.subject_id.choices = [(s.id, f"{s.department.name} - {s.name}") for s in subjects] 
